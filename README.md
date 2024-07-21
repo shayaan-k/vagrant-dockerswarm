@@ -13,4 +13,15 @@ The array includes a hostname (what the machine is called), an image (os that th
 
 I then loop through each item in 'server'. First I define the hostname of the VM for the Vagrant config. Then I define 'node' for each hostname. This 'node' holds VM specific information such as the info listen in 'server' array. Finally, I define 'vb' which hosts specific virtualbox configurations such as cpu and memory.
 
-Once that is all done I can run ```vagrant up''' to spin up the machines.
+Once that is all done I can run ```vagrant up``` to spin up the machines.
+
+## Ansible Setup
+Install ansible on control node with ```sudo apt install ansible```
+
+Create sshkey on control and copy it to other nodes. This is to allow ansible to create an ssh connection without prompting for a password
+
+All ansible modules can be found on the Ansible documentation here: https://docs.ansible.com/ansible/latest/module_plugin_guide/modules_intro.html
+
+Run ```ansible nodes -m ping``` to check connectivity.
+
+run the ansible playbook to install docker and docker compose on the nodes.
