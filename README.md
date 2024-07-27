@@ -42,3 +42,40 @@ I have also created a docker compose file as I want my application to run on mul
 This docker compose file simply exposes port 5000 on all nodes it runs on so my application can be run seemlessly in parrallel.
 
 I can run the command ```docker-compose up``` to start my application on the node and test it by going into another node and running ```curl node1:5000```. This command should output Hello World as specified in the flask application
+
+## Docker Swarm
+I started by cloning another playbook that sets up the docker swarm enviroment for me.
+For this portion I use node1 as the mastern and node 2 and 3 as workers.
+
+After setting up my nodes, I can go into a node and write ```docker node ls``` and see all the nodes listed in the cluster. With Node 1 as the leader.
+
+I now want to end the docker session that was running with ```docker-compose down```
+
+Docker swarm does not build images but instead grabs them from image repositries. That means my docker compose file (which specifies to build the app) wont work. I instead need to grab a completed image and use that. 
+
+I can buid and push an image like this:
+```docker build -t my-flask-app .```
+ > build image name my-flask-app using the Dockerfile in the current directory.
+
+Tag the docker image to a remote location: 
+```docker tag my-flask-app shsyaank/my-flask-app:latest```
+ > shayaank/my-flask-app is the location it will be stored
+
+Push the docker image:
+```docker push yourusername/my-flask-app:latest```
+
+Now I can modify the Docker Compose file to use the image.
+
+To Start the application I run:
+```docker stack deploy --compose-file docker-compose.yml myapp```
+
+```docker stack ls``` provies basic info of running services
+```docker stach services myapp``` shows more information about the running service
+
+I can scale up the number of running services by running:
+```docker service scale myapp_web=6```
+```docker service ps myapp_web```
+
+## Testing app
+
+My going to the Control Node and curling and of the nodes I will get a 'Hello World I am xxx' response that I am expecting.
