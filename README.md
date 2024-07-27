@@ -25,3 +25,20 @@ All ansible modules can be found on the Ansible documentation here: https://docs
 Run ```ansible nodes -m ping``` to check connectivity.
 
 run the ansible playbook to install docker and docker compose on the nodes.
+
+## Docker Setup
+Docker is already instlled on nodes from ansible.
+
+Create a simple flask app to run as a containterized application
+
+Create a Dockerfile that specifies the enviroment the app should be run in.
+I want to run this app on a Python environment so I specify a python linux environment for the base image.
+I then want to specify the flask app i want to run as well as the IP. (0.0.0.0)
+I can copy and then install the requirements file which containes the packages needed for my app to be runnable.
+I expose port 5000 as the port to communicate with.
+I copy the app to the working directory and run the ```flask run``` command to start the app
+
+I have also created a docker compose file as I want my application to run on multiple nodes
+This docker compose file simply exposes port 5000 on all nodes it runs on so my application can be run seemlessly in parrallel.
+
+I can run the command ```docker-compose up``` to start my application on the node and test it by going into another node and running ```curl node1:5000```. This command should output Hello World as specified in the flask application
